@@ -1,25 +1,52 @@
-import { Text, View, Image, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import Title from "../components/ui/Title";
 import Color from "../constants/colors";
 import PrimaryButton from "../components/ui/PrimaryButton";
 
 function GameOverScreen({ roundsNumber, userNumber, onStartNewGame }) {
+  const { width, height } = useWindowDimensions();
+
+  let imageSize = 300;
+
+  if (width < 300) {
+    imageSize = 150;
+  }
+
+  if (height < 400) {
+    imageSize = 80;
+  }
+
+  const imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: imageSize / 2,
+  };
   return (
-    <View style={styles.rootContainer}>
-      <Title>Game Over!!!</Title>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require("../assets/image/oggyover.jpg")}
-        />
+    <ScrollView style={{ flex: 1 }}>
+      <View style={styles.rootContainer}>
+        <Title>Game Over!!!</Title>
+        <View style={[styles.imageContainer, imageStyle]}>
+          <Image
+            style={styles.image}
+            source={require("../assets/image/oggyover.jpg")}
+          />
+        </View>
+        <Text style={styles.summaryText}>
+          Your Phone Needed
+          <Text style={styles.highlight}> {roundsNumber} </Text>
+          Times To Guess The Number
+          <Text style={styles.highlight}> {userNumber}</Text>.
+        </Text>
+        <PrimaryButton onPress={onStartNewGame}>Start New Game</PrimaryButton>
       </View>
-      <Text style={styles.summaryText}>
-        Your Phone Needed <Text style={styles.highlight}> {roundsNumber} </Text>
-        Round To Guess The Number
-        <Text style={styles.highlight}> {userNumber}</Text>.
-      </Text>
-      <PrimaryButton onPress={onStartNewGame}>Start New Game</PrimaryButton>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -33,9 +60,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageContainer: {
-    borderRadius: 150,
-    width: 300,
-    height: 300,
     borderWidth: 3,
     borderColor: Color.primary700,
     overflow: "hidden",
@@ -46,13 +70,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   summaryText: {
-    fontFamily: "open-sans",
+    // fontFamily: "open-sans",
     fontSize: 24,
     textAlign: "center",
     marginBottom: 24,
   },
   highlight: {
-    fontFamily: "open-sans-bold",
+    // fontFamily: "open-sans-bold",
     color: Color.primary500,
   },
 });
